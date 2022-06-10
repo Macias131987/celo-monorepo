@@ -5,6 +5,8 @@ import {
 } from '@celo/protocol/lib/fed-attestations-utils'
 import { CeloContractName } from '@celo/protocol/lib/registry-utils'
 import {
+  assertEqualBN,
+  assertEqualBNArray,
   assertLogMatches2,
   assertRevert,
   assertRevertWithReason,
@@ -209,7 +211,7 @@ contract('FederatedAttestations', (accounts: string[]) => {
       actualIssuedOns: BigNumber[],
       actualSigners: string[]
     ) => {
-      expect(actualCountsPerIssuer.map((count) => count.toNumber())).to.eql(expectedCountsPerIssuer)
+      assertEqualBNArray(actualCountsPerIssuer, expectedCountsPerIssuer)
 
       assert.lengthOf(actualAddresses, expectedAttestations.length)
       assert.lengthOf(actualIssuedOns, expectedAttestations.length)
@@ -217,7 +219,7 @@ contract('FederatedAttestations', (accounts: string[]) => {
 
       expectedAttestations.forEach((expectedAttestation, index) => {
         assert.equal(actualAddresses[index], expectedAttestation.account)
-        assert.equal(actualIssuedOns[index].toNumber(), expectedAttestation.issuedOn)
+        assertEqualBN(actualIssuedOns[index], expectedAttestation.issuedOn)
         assert.equal(actualSigners[index], expectedAttestation.signer)
       })
     }
@@ -370,7 +372,7 @@ contract('FederatedAttestations', (accounts: string[]) => {
       actualCountsPerIssuer: BigNumber[],
       actualIdentifiers: string[]
     ) => {
-      expect(actualCountsPerIssuer.map((count) => count.toNumber())).to.eql(expectedCountsPerIssuer)
+      assertEqualBNArray(actualCountsPerIssuer, expectedCountsPerIssuer)
       expect(actualIdentifiers).to.eql(expectedIdentifiers.map((idCase) => idCase.identifier))
     }
 
